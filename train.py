@@ -141,14 +141,14 @@ if __name__ == "__main__":
 
             with torch.no_grad():
                 input_ids, attention_masks = dataset_train.tokenize_caption(c, device)
-                z = model.module.encode(input_ids, attention_masks)
+                z = model.encode(input_ids, attention_masks)
                 docs_train.append(z.cpu().numpy())
 
         docs_train = np.vstack(docs_train)
 
         with torch.no_grad():
-            z_s = model.module.z_estart.weight.cpu().numpy()
-            z_d = model.module.z_eend.weight.cpu().numpy()
+            z_s = model.z_estart.weight.cpu().numpy()
+            z_d = model.z_eend.weight.cpu().numpy()
 
         corpus_test = list(dataset_test.data.texts)
         docs_test = []
@@ -157,7 +157,7 @@ if __name__ == "__main__":
 
             with torch.no_grad():
                 input_ids, attention_masks = dataset_test.tokenize_caption(c, device)
-                z = model.module.encode(input_ids, attention_masks)
+                z = model.encode(input_ids, attention_masks)
                 docs_test.append(z.cpu().numpy())
 
         docs_test = np.vstack(docs_test)
@@ -170,11 +170,9 @@ if __name__ == "__main__":
 
         return docs_train, docs_test, label_train, label_test, time_train, time_test, z_s, z_d
     
-    from sklearn.linear_model import LogisticRegression
-    from sklearn.svm import SVC
     from sklearn.model_selection import GridSearchCV
 
-    def eval_fn(docs_test, docs_train, model, labels, time_train, time_test, z_s, z_e):
+    def eval_fn(docs_test, labels, time_test, z_s, z_e):
 
         start = datetime.now()
         axis_embds = z_s + z_e
@@ -225,7 +223,7 @@ if __name__ == "__main__":
 
     print("Beginning evaluation for dataset %s in %s" % (DATASET, TEMPORALITY), flush=True)
     start = datetime.now()
-    ce, acc, act, mae = eval_fn(docs_test, docs_train, model, label_test, time_train, time_test, z_s, z_e)
+    ce, acc, act, mae = eval_fn(docs_test, label_test, time_test, z_s, z_e)
     print("[Evaluation at beginning in %s] Coverage : %.3f  | Accuracy : %.3f | MAE : %.3f | Time Accuracy : %.3f \n" % (str(datetime.now() - start), ce, acc, mae, act), flush=True)
 
     if LOSS=="L2":
@@ -311,10 +309,10 @@ if __name__ == "__main__":
 
     start = datetime.now()
     docs_train, docs_test, label_train, label_test, time_train, time_test, z_s, z_e = get_evaluation_data(dataset_train, dataset_test, model)
-    ce, acc, act, mae = eval_fn(docs_test, docs_train, model, label_test, time_train, time_test, z_s, z_e)
+    ce, acc, act, mae = eval_fn(docs_test, label_test, time_test, z_s, z_e)
 
     print("[Evaluation in %s] Coverage : %.3f  | Accuracy : %.3f | MAE : %.3f | Time Accuracy : %.3f\n" % (str(datetime.now() - start), ce, acc, mae, act), flush=True)
    
     print("We're finished !")
 
-    torch.save(model.state_dict(), os.path.join("model", DATASET, AXIS, "%s_%d_ckpt.pt" % (model.method, epoch)))
+    torch.save(model.state_dict(), os.path.join("model", DATASET, "%s_%d_ckpt.pt" % (model.method, epoch)))
