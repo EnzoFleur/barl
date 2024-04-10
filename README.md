@@ -22,9 +22,10 @@ All the data used in the paper come from the [Dynamic Author Representation mode
 To repoduce the experiments in the paper, you should first pretrain a BERT model on the time masking task for both datasets as explained in the paper [Time Masking for Temporal Language Models](https://arxiv.org/abs/2110.06366). You can use the associated repository [TempoBERT github](https://github.com/guyrosin/tempobert)\[2\].
 
 You can then train BARL following the given command (you should replace the encoder by the pretrained TempoBERT instance) : 
+
 `python run.py --dataset ./data/prediction/s2g --epochs 100 --encoder BERT --learningrate 5e-4`
 
 ## References
- \[1\]Delasalles, E., Lamprier, S., Denoyer, L.: Learning dynamic author representations with temporal language models. In: 2019 IEEE International Conference on Data Mining (ICDM). pp. 120–129. IEEE (2019)
+ \[1\] Delasalles, E., Lamprier, S., Denoyer, L.: Learning dynamic author representations with temporal language models. In: 2019 IEEE International Conference on Data Mining (ICDM). pp. 120–129. IEEE (2019)
 
- \[2\]Rosin, G.D., Guy, I., Radinsky, K.: Time masking for temporal language models. In: Proceedings of the Fifteenth ACM International Conference on Web Search and Data Mining. pp.833–841 (2022)
+ \[2\] Rosin, G.D., Guy, I., Radinsky, K.: Time masking for temporal language models. In: Proceedings of the Fifteenth ACM International Conference on Web Search and Data Mining. pp.833–841 (2022)
