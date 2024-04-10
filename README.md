@@ -1,6 +1,9 @@
 # Brownian Bridges for Author Representation Learning (BARL)
 
-Official implementation of the paper *Building Brownian Bridges to Learn Dynamic Author Representations from Texts* by Enzo Terreau and Julien Velcin
+Official implementation of the paper *Building Brownian Bridges to Learn Dynamic Author Representations from Texts*
+
+Enzo Terreau and Julien Velcin in
+
 Symposium on Intelligent Data Analysis (IDA 2024)
 
 ## Model
@@ -9,7 +12,7 @@ Symposium on Intelligent Data Analysis (IDA 2024)
 
 ## Requirements
 
-- Python >= 3.6
+- Python >= 3.7
 - PyTorch >= 1.12.0
 - transformers >= 4.30.0
 
